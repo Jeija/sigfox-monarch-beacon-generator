@@ -43,6 +43,11 @@ rcs = {
         "pattern1" : delta_f1,
         "pattern2" : delta_f3
     },
+    "rc7" : {
+        "center" : 869160000,
+        "pattern1" : delta_f2,
+        "pattern2" : delta_f3
+    },
 }
 
 def generate_beacon(samplingrate, rc):
