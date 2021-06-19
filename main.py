@@ -48,7 +48,7 @@ def main():
     parser.add_argument("-r", "--rc", help = "Radio configuration (rc1, rc2, rc3, rc4 or rc6)", default = "rc1")
     parser.add_argument("-s", "--samplingrate", help = "Sampling rate for transmit Signal (Hz)", type = int, default = 2000000)
     parser.add_argument("-d", "--devicestring", help = "SoapySDR device string", default = "")
-    parser.add_argument("-i", "--interval", help = "Interval in which Monarch beacon is transmitted (seconds)", type = int, default = 5 * 60)
+    parser.add_argument("-i", "--interval", help = "Interval in which Monarch beacon is transmitted (seconds)", type = float, default = 2 * 60)
     parser.add_argument("-g", "--gain", help = "Transmit Gain", type = int, default = 60)
     parser.add_argument("-o", "--offset", help = "Frequency offset from transmitter's center frequency", type = int, default = 100000)
     args = parser.parse_args()
@@ -82,7 +82,7 @@ def main():
 
     block_start = 0
     while state["running"]:
-        block = embed_beacon(monarch_beacon, np.zeros(mtu, dtype = np.complex64), block_start, args.interval * args.samplingrate)
+        block = embed_beacon(monarch_beacon, np.zeros(mtu, dtype = np.complex64), block_start, int(args.interval * args.samplingrate))
         status = transmitter.writeStream(txstream, [block], block.size, timeoutUs = 1000000)
         if status.ret != block.size:
             raise Exception("Expected writeStream() to consume all samples! %d" % status.ret)
