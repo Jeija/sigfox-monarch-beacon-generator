@@ -11,7 +11,7 @@ def main():
     # Parse command line arguments
     parser = argparse.ArgumentParser(description = "Plot Sigfox Monarch Beacon")
     parser.add_argument("-r", "--rc", help = "Radio configuration (rc1, rc2, rc3, rc4 or rc6)", default = "rc1")
-    parser.add_argument("-s", "--samplingrate", help = "Sampling rate for transmit Signal (Hz)", type = int, default = 2000000)
+    parser.add_argument("-s", "--samplingrate", help = "Sampling rate for transmit Signal (Hz)", type = int, default = 30000)
     args = parser.parse_args()
 
     # Retrieve beacon and center frequency
@@ -22,7 +22,7 @@ def main():
     plt.xlabel("Time [s]")
     plt.show()
 
-    plt.specgram(monarch_beacon, Fs = args.samplingrate, NFFT=1024, cmap = "viridis_r")
+    plt.specgram(monarch_beacon, Fs = args.samplingrate, NFFT=1024, cmap = "inferno")
     plt.xlabel("Time [s]")
     plt.ylabel("Frequency [Hz]")
     plt.show()
