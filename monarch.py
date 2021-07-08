@@ -50,7 +50,7 @@ rcs = {
     },
 }
 
-def generate_beacon(samplingrate, rc):
+def generate_beacon(samplingrate, rc, mode = "normal"):
     t_pattern1 = np.arange(0, duration_pattern1, 1 / samplingrate)
     t_pattern2 = np.arange(0, duration_pattern2, 1 / samplingrate)
 
@@ -63,7 +63,13 @@ def generate_beacon(samplingrate, rc):
     pattern1 = np.sum(np.exp(1.0j * 2 * np.pi * np.outer(pattern1_carriers, t_pattern1)), axis = 0)
     pattern2 = np.sum(np.exp(1.0j * 2 * np.pi * np.outer(pattern2_carriers, t_pattern2)), axis = 0)
 
-    beacon = np.hstack([pattern1, pattern2])
+    if mode == "normal":
+        beacon = np.hstack([pattern1, pattern2])
+    elif mode == "pattern1":
+        beacon = pattern1
+    elif mode == "pattern2":
+        beacon = pattern2
+
     beacon = beacon / np.max(beacon)
 
     return beacon

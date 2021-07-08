@@ -51,10 +51,12 @@ def main():
     parser.add_argument("-i", "--interval", help = "Interval in which Monarch beacon is transmitted (seconds)", type = float, default = 2 * 60)
     parser.add_argument("-g", "--gain", help = "Transmit Gain", type = int, default = 60)
     parser.add_argument("-o", "--offset", help = "Frequency offset from transmitter's center frequency", type = int, default = 100000)
+    parser.add_argument("-m", "--mode", help = "Mode (normal / pattern1 / pattern2)", default = "normal")
+    parser.add_argument("-p", "--stop", help = "Transmit beacon only once, then stop", action = "store_true", default = False)
     args = parser.parse_args()
 
     # Retrieve beacon and center frequency
-    monarch_beacon = monarch.generate_beacon(args.samplingrate, args.rc)
+    monarch_beacon = monarch.generate_beacon(args.samplingrate, args.rc, args.mode)
     monarch_freq = monarch.get_center_frequency(args.rc)
 
     # Mix beacon by frequency offset
@@ -81,7 +83,7 @@ def main():
     signal.signal(signal.SIGINT, signal_handler)
 
     block_start = 0
-    while state["running"]:
+    while (not args.stop or block_start < len(monarch_beacon)) and state["running"]:
         block = embed_beacon(monarch_beacon, np.zeros(mtu, dtype = np.complex64), block_start, int(args.interval * args.samplingrate))
         status = transmitter.writeStream(txstream, [block], block.size, timeoutUs = 1000000)
         if status.ret != block.size:
