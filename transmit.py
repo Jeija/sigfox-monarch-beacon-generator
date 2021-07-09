@@ -45,7 +45,7 @@ def embed_beacon(beacon, block, block_start, beacon_interval):
 def main():
     # Parse command line arguments
     parser = argparse.ArgumentParser(description = "Generate Sigfox Monarch Beacon and transmit using SoapySDR")
-    parser.add_argument("-r", "--rc", help = "Radio configuration (rc1, rc2, rc3, rc4 or rc6)", default = "rc1")
+    parser.add_argument("-r", "--rc", help = "Radio configuration (rc1, rc2, rc3, rc4, rc5, rc6 or rc7)", default = "rc1")
     parser.add_argument("-s", "--samplingrate", help = "Sampling rate for transmit Signal (Hz)", type = int, default = 2000000)
     parser.add_argument("-d", "--devicestring", help = "SoapySDR device string", default = "")
     parser.add_argument("-i", "--interval", help = "Interval in which Monarch beacon is transmitted (seconds)", type = float, default = 2 * 60)
